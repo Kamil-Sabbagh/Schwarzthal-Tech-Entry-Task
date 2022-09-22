@@ -9,7 +9,7 @@ _Kamil Sabbagh, September 2021_
 ## Table of contents
 1. [ Introduction ](#intro)
 2. [ Scrapy ](#Scrapy)
-3. [ MongoDP ](#MongoDB)
+3. [ MongoDB ](#MongoDB)
 4. [ Implementing the code ](#Implemention)
 5. [ Conclusion ](#Conclusion)
 ___
@@ -86,7 +86,7 @@ In this specific task, we choose not to utilize the `items.py` provided by scrap
 
 <a name="MongoDB"></a>
 ## 3. MongoDB
-We used MongoDB a NOSQL data to store our data. The data will be stored in the data base `Companies_DataBase` in two collections `scrapped_companies` and `comps_and_indiv`.
+We used MongoDB a NOSQL data base to store our data. The data will be stored in the data base `Companies_DataBase` in two collections `scrapped_companies` and `comps_and_indiv`.
 
 First things first we should add the connection string to mongoDB to `.env variable` located in `/difc/.env`.
 In there you should edit the file adding your connection string:
