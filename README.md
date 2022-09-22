@@ -11,7 +11,7 @@ _Kamil Sabbagh, September 2021_
 2. [ Scrapy ](#Scrapy)
 3. [ MongoDP ](#MongoDB)
 4. [ Implementing the code ](#Implemention)
-4. [ Conclusion ](#Conclusion)
+5. [ Conclusion ](#Conclusion)
 ___
 <a name="intro"></a>
 ## 1. Introduction
@@ -88,14 +88,12 @@ In this specific task, we choose not to utilize the `items.py` provided by scrap
 ## 3. MongoDB
 We used MongoDB a NOSQL data to store our data. The data will be stored in the data base `Companies_DataBase` in two collections `scrapped_companies` and `comps_and_indiv`.
 
-To make the connection to MongoDB we will an account `admin:admin` and connect directly to the database:
+First things first we should add the connection string to mongoDB to `.env variable` located in `/difc/.env`.
+In there you should edit the file adding your connection string:
 ```
-client = pymongo.MongoClient(
-        "mongodb+srv://admin:admin@companies.caxacha.mongodb.net/?retryWrites=true&w=majority")
-db = client.Companies_DataBase.scrapped_companies
-association = client.Companies_DataBase.comps_and_individuals
+MongoDB_connection_string = {adding your MongoDB string connection here}
 ```
-
+The crawler will create the databases and collections needed automatically.
 
 The Data collected in `scrapped_companies` will hold all the available information for a given company:
 ```
@@ -121,6 +119,6 @@ cd difc
 scrapy crawl comp_spider
 ```
 <a name="Conclusion"></a>
-## 6. Conclusion
+## 5. Conclusion
 In this task, we successfully implemented a company scraper. We worked with Scrapy framework and mongodb. We used scrapy to scrape and parse over 1000+ companies and scrape the needed information, and finlay store on MongoDB.
 
