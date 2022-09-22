@@ -112,10 +112,14 @@ First, we should make sure that we are in the correct path `/Schwarzthal-Tech-En
 ```
 pip install -r requirements.txt
 ```
-
-Now we have all the needed requirements we can simply run the crawler using the command line:
+Next make sure you added the connection string to mongoDB to `.env variable` located in `/difc/.env`.
+In there you should edit the file adding your connection string:
 ```
-cd difc
+MongoDB_connection_string = {adding your MongoDB string connection here}
+```
+Now we have all the needed requirements we can simply run the crawler using the command line:
+make sure sure you are in `/difc/`:
+```
 scrapy crawl comp_spider
 ```
 <a name="Conclusion"></a>
