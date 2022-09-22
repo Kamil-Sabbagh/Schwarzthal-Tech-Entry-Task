@@ -59,7 +59,7 @@ class comp_spider(scrapy.Spider):
             while self.comp_scraped < 1000 and self.end[i] == False:
                 self.current_page += 1
                 try:
-                    yield scrapy.Request(url=url.format(page=self.current_page), callback=self.parse_for_comps, headers=self.headers, meta={"end": i})
+                    yield scrapy.Request(url=url.format(page=self.current_page), callback=self.parse_by_page, headers=self.headers, meta={"end": i})
                 except:
                     print("Invalid URL!")
 
@@ -84,7 +84,7 @@ class comp_spider(scrapy.Spider):
         self.association.insert_many(up)
         os._exit(0)
 
-    def parse_for_comps(self, response):
+    def parse_by_page(self, response):
         """_summary_
         This function receive a full page to be sracped.
         Each page have several companies to be sracped further.
@@ -111,11 +111,11 @@ class comp_spider(scrapy.Spider):
                 links[i] = "http://" + \
                     link[link.find("www"):link.find(
                         '<')].replace("\\", "") + "/"
-                yield scrapy.Request(url=links[i], callback=self.get_comp_dat)
+                yield scrapy.Request(url=links[i], callback=self.parse_by_comp)
         else:
             self.end[response.meta.get('end')] = True
 
-    def get_comp_dat(self, response):
+    def parse_by_comp(self, response):
         """_summary_
         This is function collects the data from the company page,
         It stores all the data in the self.info directly.
@@ -130,12 +130,12 @@ class comp_spider(scrapy.Spider):
         Q2 = "//div[@class='row']/div[@class='col-sm-6 col']/p/text()"
         all_data = response.xpath(Q1 + "|" + Q2).getall()
 
-        #We applying cleaning algorithm to extract the fields and values
-        #for the given company 
+        # We applying cleaning algorithm to extract the fields and values
+        # for the given company
         comp_keys, comp_values = self.clean(all_data)
 
-        #now that we have the fields and values we iterate on them adding
-        #them to self.info
+        # now that we have the fields and values we iterate on them adding
+        # them to self.info
         comp_data = {}
         comp_data["url"] = original_url
         for key, val in zip(comp_keys, comp_values):
@@ -143,7 +143,7 @@ class comp_spider(scrapy.Spider):
             if key not in self.params:
                 self.params.append(key)
 
-        #And finally we also add the associations between individuals and companies
+        # And finally we also add the associations between individuals and companies
         if "Directors" in comp_data.keys():
             self.make_assos(comp_data["Directors"], comp_data["Name"])
         self.info.append(comp_data)
@@ -159,7 +159,7 @@ class comp_spider(scrapy.Spider):
         pointer1 = 0
         pointer2 = 0
 
-        #We will use a two pointers algorithm to to extract all the needed data
+        # We will use a two pointers algorithm to to extract all the needed data
         all_data = [val for val in all_data if "\n" not in val or val == ""]
         while pointer1 < len(all_data):
             while pointer1 < len(all_data) and ":" not in all_data[pointer1]:
