@@ -117,9 +117,10 @@ pip install -r requirements.txt
 
 Now we have all the needed requirements we can simply run the crawler using the command line:
 ```
+cd difc
 scrapy crawl comp_spider
 ```
 <a name="Conclusion"></a>
 ## 6. Conclusion
-In this task, we successfully implemented a company scraper. We worked with Scrapy framewrok and mongodb. We used scrapy to scrape and parse over 1000+ companies and scrape the needed information, and finaly store on MongoDB.
+In this task, we successfully implemented a company scraper. We worked with Scrapy framework and mongodb. We used scrapy to scrape and parse over 1000+ companies and scrape the needed information, and finlay store on MongoDB.
 

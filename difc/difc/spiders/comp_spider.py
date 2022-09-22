@@ -4,6 +4,7 @@ import pymongo
 import time
 import csv
 import os
+from dotenv import load_dotenv
 
 
 class comp_spider(scrapy.Spider):
@@ -14,7 +15,8 @@ class comp_spider(scrapy.Spider):
     For each new page, the spider will scrape every company available on that page.
     the results will be yielded and saved directly to MongoDP. 
     """
-
+    #load environment variables
+    load_dotenv()
     # the Global variables which we will need across the functions bok
     name = "comp_spider"
     comp_scraped = 0
@@ -27,8 +29,15 @@ class comp_spider(scrapy.Spider):
 
     # then we make the connections to MongoDB
     # In this example we will connect using the account admin:admin
-    client = pymongo.MongoClient(
-        "mongodb+srv://admin:admin@companies.caxacha.mongodb.net/?retryWrites=true&w=majority")
+    client = pymongo.MongoClient(os.getenv("MongoDB_connection_string"))
+    dbnames = client.list_database_names()
+    if "Companies_DataBase" not in dbnames:
+        mydb = client["Companies_DataBase"]
+    collection_names = client.Companies_DataBase.list_collection_names()
+    if "scrapped_companies" not in collection_names:
+        mydb = client.Companies_DataBase["scrapped_companies"]
+    if "comps_and_individuals" not in collection_names:
+        mydb = client.Companies_DataBase["comps_and_individuals"]
     # Companies_DataBase.scrapped_companies is the collection which has data about the companies
     db = client.Companies_DataBase.scrapped_companies
     # Companies_DataBase.comps_and_individuals is the collections which has the associations between Directors of companies and companies
